@@ -1,0 +1,114 @@
+package Controller;
+
+import Model.Worker;
+import Model.SalaryHistory;
+import util.Inputer;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Manages worker information and salary adjustments.
+ */
+public class WorkerController {
+
+    private final List<Worker> workers;
+    private final List<SalaryHistory> salaryHistories;
+
+    public WorkerController() {
+        workers = new ArrayList<>();
+        salaryHistories = new ArrayList<>();
+
+    }
+
+    /**
+     * Adds a new worker to the system.
+     */
+    public void addWorker() {
+        System.out.println("--------- Add Worker ----------");
+        String code = Inputer.inputString("Enter Code: ");
+
+        // Check for duplicate code manually using a loop
+        for (Worker worker : workers) {
+            if (worker.getCode().equals(code)) {
+                System.out.println("Code already exists.");
+                return;
+            }
+        }
+
+        String name = Inputer.inputString("Enter Name: ");
+        int age = Inputer.inputInt("Enter Age: ", 18, 50);
+        double salary = Inputer.inputDouble("Enter Salary: ");
+        String workLocation = Inputer.inputString("Enter Work Location: ");
+
+        workers.add(new Worker(code, name, age, salary, workLocation));
+        System.out.println("Worker added successfully.");
+    }
+
+    /**
+     * Adjusts the salary of a worker.
+     *
+     * @param status the adjustment status (UP or DOWN).
+     */
+    public void changeSalary(String status) {
+        System.out.println("------- " + status + " Salary --------");
+        String code = Inputer.inputString("Enter Code: ");
+        
+        // Find the worker by code using a loop
+        Worker worker = null;
+        for (Worker w : workers) {
+            if (w.getCode().equals(code)) {
+                worker = w;
+                break;
+            }
+        }
+
+        if (worker == null) {
+            System.out.println("Worker not found.");
+            return;
+        }
+
+        double amount = Inputer.inputDouble("Enter Amount: ");
+        
+        // If the status is "UP", increase the salary
+        if (status.equals("UP")) {
+            worker.setSalary(worker.getSalary() + amount);
+        } else if (status.equals("DOWN")) {
+            // If the status is "DOWN", ensure the amount is not greater than the current salary
+            if (amount > worker.getSalary()) {
+                System.out.println("Amount to decrease cannot be greater than the current salary.");
+                return;
+            }
+            worker.setSalary(worker.getSalary() - amount);
+        }
+
+        // Add the salary history entry
+        SalaryHistory history = new SalaryHistory(worker.getCode(), worker.getName(),
+                worker.getAge(), worker.getSalary(), status, new Date());
+        salaryHistories.add(history);
+        System.out.println("Salary adjusted successfully.");
+    }
+
+    /**
+     * Displays the salary adjustment history of workers.
+     */
+    public void getInfomationSalary() {
+        System.out.println("-------------------- Display Information Salary -----------------------");
+
+        // Check if there are no salary adjustments
+        if (salaryHistories.isEmpty()) {
+            System.out.println("No salary adjustments to display.");
+            return;
+        }
+
+        // Display the salary adjustment information using a loop
+        System.out.printf("%-5s %-10s %-5s %-10s %-10s %-10s%n",
+                "Code", "Name", "Age", "Salary", "Status", "Date");
+        for (SalaryHistory history : salaryHistories) {
+            System.out.printf("%-5s %-10s %-5d %-10.2f %-10s %-10s%n",
+                    history.getCode(), history.getName(), history.getAge(),
+                    history.getSalary(), history.getStatus(), history.getDate());
+        }
+    }
+}
