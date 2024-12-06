@@ -1,0 +1,48 @@
+package Model;
+
+import java.util.Date;
+
+/**
+ * Tracks salary adjustment history for a worker.
+ */
+public class SalaryHistory {
+    private String code;
+    private String name;
+    private int age;
+    private double salary;
+    private String status; // UP or DOWN
+    private Date date;
+
+    public SalaryHistory(String code, String name, int age, double salary, String status, Date date) {
+        this.code = code;
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.status = status;
+        this.date = date;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+}
