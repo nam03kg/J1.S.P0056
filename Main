@@ -1,0 +1,47 @@
+package view;
+
+import Controller.WorkerController;
+import util.Inputer;
+
+/**
+ * Entry point for the Worker Management program.
+ */
+public class Main {
+
+    /**
+     * Main method to start the Handy Expense program.
+     *
+     * @param args command-line arguments (not used).
+     */
+    public static void main(String[] args) {
+        WorkerController management = new WorkerController();
+
+        while (true) {
+            System.out.println("======== Worker Management =========");
+            System.out.println("1. Add Worker");
+            System.out.println("2. Up salary");
+            System.out.println("3. Down salary");
+            System.out.println("4. Display Information salary");
+            System.out.println("5. Exit");
+
+            int choice = Inputer.inputInt("Your choice: ", 1, 5);
+            switch (choice) {
+                case 1:
+                    management.addWorker();
+                    break;
+                case 2:
+                    management.changeSalary("UP");
+                    break;
+                case 3:
+                    management.changeSalary("DOWN");
+                    break;
+                case 4:
+                    management.getInfomationSalary();
+                    break;
+                case 5:
+                    System.out.println("Program exited.");
+                    return;
+            }
+        }
+    }
+}
